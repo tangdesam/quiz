@@ -1,8 +1,10 @@
 package id.ilufa.quiz;
 
 import id.ilufa.quiz.dao.ExamDao;
+import id.ilufa.quiz.dao.OptionDao;
 import id.ilufa.quiz.dao.QuestionDao;
 import id.ilufa.quiz.entity.Exam;
+import id.ilufa.quiz.entity.Option;
 import id.ilufa.quiz.entity.Question;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +39,20 @@ class QuizApplicationTests {
 		question.setText("1 + 1 = ");
 		questionDao.save(question);
 		System.out.println(">>> question id: " + question.getId());
+	}
+
+	@Autowired
+	OptionDao optionDao;
+	@Test
+	void createOption() {
+		Long questionId = 1l;
+		Question question = questionDao.findById(questionId)
+				.orElseThrow(() -> new IllegalArgumentException(">>> question not found, id: " + questionId));
+		Option option = new Option();
+		option.setText("5");
+		option.setAnswer(false);
+		option.setQuestion(question);
+		optionDao.save(option);
+		System.out.println(">>> generated optionId: " + option.getId());
 	}
 }
