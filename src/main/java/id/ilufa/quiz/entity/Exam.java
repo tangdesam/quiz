@@ -1,9 +1,6 @@
 package id.ilufa.quiz.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -19,6 +16,6 @@ public class Exam {
 
     private String subject;
 
-    @OneToMany(mappedBy = "exam")
+    @OneToMany(mappedBy = "exam", fetch = FetchType.EAGER)
     private List<Question> questionList;
 }
