@@ -1,9 +1,36 @@
 <!DOCTYPE html>
-<html>
+<html
+		layout:decorate="~{shared/layout}"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
+	<meta charset="UTF-8">
 	<title>About</title>
+<!--	<link href="style.css" rel="stylesheet" type="text/css">-->
 </head>
 <body>
-	<h2>About</h2>
+
+<div layout:fragment="content">
+	<section class="content-header">
+		<div class="container-fluid">
+			<h1>About Quiz</h1>
+		</div>
+	</section>
+	<section class="content">
+		<div class="container-fluid">
+			<div class="card">
+				<div class="card-body row">
+					<div class="col-12 text-center d-flex align-items-center justify-content-center">
+						<div class="">
+							<h2>Quiz App</h2>
+							<p class="lead mb-5">Simple quiz application</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+</div>
+
 </body>
 </html>
