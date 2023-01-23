@@ -1,0 +1,6 @@
+<div class="col-xs-12 col-sm-6">
+    <label for="subject" class="form-label">Subject</label>
+    <input type="text" class="form-control" th:field="*{subject}" placeholder="Subject" autofocus>
+    <span th:if="${#fields.hasErrors('subject')}" th:errors="*{subject}" class="text-danger"></span>
+    <br/>
+</div>

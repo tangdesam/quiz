@@ -1,6 +1,7 @@
 package id.ilufa.quiz.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -14,6 +15,7 @@ public class Exam {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
 
+    @NotBlank
     private String subject;
 
     @OneToMany(mappedBy = "exam", fetch = FetchType.EAGER)

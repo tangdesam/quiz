@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html
+        layout:decorate="~{shared/layout}"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create Examination</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <section class="content-header">
+        <div class="container-fluid">
+            <h1>Create Examination</h1>
+        </div>
+    </section>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card">
+                <form th:action="@{/exam/save}" th:object="${exam}" method="post">
+                    <div class="card-header">
+                        <h3 class="card-title">Examination</h3>
+                    </div>
+                    <div class="card-body">
+                        <div th:if="${#fields.hasAnyErrors()}" class="row alert alert-danger">
+                            <ul>
+                                <li th:each="err : ${#fields.allErrors()}" th:text="${err}" />
+                            </ul>
+                        </div>
+
+                        <div th:insert="exam/_form"></div>
+                    </div>
+                    <div class="card-footer">
+                        <input type="submit" class="btn btn-primary" value="Create">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>

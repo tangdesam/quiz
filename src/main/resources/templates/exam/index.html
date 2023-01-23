@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html
+        layout:decorate="~{shared/layout}"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>List Examination</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <section class="content-header">
+        <div class="container-fluid">
+            <h1>List Examination</h1>
+        </div>
+    </section>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Examination</h3>
+                    <div class="card-tools">
+                        <a href="/exam/create"><span class="fas fa-plus"></span> Create</a>
+                    </div>
+                </div>
+                <div class="card-body" >
+                    <div th:if="${errorMessage != null}" class="row alert alert-danger">
+                        <ul>
+                            <li th:text="${errorMessage}" />
+                        </ul>
+                    </div>
+
+                    <table class="table table-head-fixed table-hover">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Subject</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="exam : ${exams}">
+                            <td th:text="${exam.id}"></td>
+                            <td th:text="${exam.subject}"></td>
+
+                            <td><a th:href="@{/exam/edit/{id}(id=${exam.id})}">Edit</a></td>
+                            <td><a th:href="@{/exam/delete/{id}(id=${exam.id})}">Delete</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div> <!-- /.card-body -->
+
+            </div> <!-- /.card -->
+        </div> <!-- /.container-fluid -->
+    </section>
+</div>
+</body>
+</html>
