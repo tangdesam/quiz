@@ -45,7 +45,7 @@
                             <td th:text="${exam.subject}"></td>
 
                             <td><a th:href="@{/exam/edit/{id}(id=${exam.id})}">Edit</a></td>
-                            <td><a th:href="@{/exam/delete/{id}(id=${exam.id})}">Delete</a></td>
+                            <td><a th:href="@{/exam/delete/{id}(id=${exam.id})}" onclick="return confirm('Are you sure?');">Delete</a></td>
                         </tr>
                         </tbody>
                     </table>

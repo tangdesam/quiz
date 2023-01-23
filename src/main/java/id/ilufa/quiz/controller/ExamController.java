@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -37,6 +38,31 @@ public class ExamController {
             return "exam/create";
         }
         examDao.save(exam);
+        return "redirect:/exam/";
+    }
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable("id") String id, Model model) {
+        Exam exam = examDao.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid ID:" + id));
+
+        model.addAttribute("exam", exam);
+        return "exam/edit";
+    }
+
+    @PostMapping("/update/{id}")
+    public String update(@Valid Exam exam, BindingResult result) {
+        if (result.hasErrors()) {
+            return "exam/edit";
+        }
+        examDao.save(exam);
+        return "redirect:/exam/";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable("id") String id, Model model) {
+        Exam exam = examDao.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid ID:" + id));
+        examDao.delete(exam);
         return "redirect:/exam/";
     }
 
