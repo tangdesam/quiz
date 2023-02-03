@@ -5,13 +5,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Create Examination</title>
+  <title>Edit Examination</title>
 </head>
 <body>
 <div layout:fragment="content">
   <section class="content-header">
     <div class="container-fluid">
-      <h1>Create Examination</h1>
+      <h1>Edit Examination</h1>
     </div>
   </section>
   <section class="content">
@@ -20,6 +20,9 @@
         <form th:action="@{/exam/update/{id}(id=${exam.id})}" th:object="${exam}" method="post">
           <div class="card-header">
             <h3 class="card-title">Examination</h3>
+            <div class="card-tools">
+              <a th:href="@{/question/create?examId={examId}(examId=${exam.id})}"><span class="fas fa-plus"></span> Add Question</a>
+            </div>
           </div>
           <div class="card-body">
             <div th:if="${#fields.hasAnyErrors()}" class="row alert alert-danger">
@@ -34,7 +37,30 @@
             <input type="submit" class="btn btn-primary" value="Update">
           </div>
         </form>
-      </div>
+      </div> <!-- /.card -->
+
+      <div th:each="question, iStatus : ${exam.questionList}">
+        <div class="card">
+          <div class="card-header" >
+            <a th:href="@{/question/edit?id={id}(id=${question.id})}">
+              <i class="fas fa-edit"></i>
+            </a>
+            <span th:text="${question.text}"></span>
+          </div>
+          <div class="card-body">
+            <span th:each="option : ${question.optionList}">
+              <input type="radio" th:name="${'answer-' + iStatus.index}" th:text="${option.text}" th:values="${option.id}" disabled/>
+              <a th:href="@{/option/edit?id={id}(id=${option.id})}">
+                <i class="fas fa-edit"></i>
+              </a>
+              <br>
+            </span>
+          </div>
+          <div class="card-footer">
+            <a th:href="@{/option/create?questionId={questionId}(questionId=${question.id})}"><span class="fas fa-plus"></span> Add Option</a>
+          </div>
+        </div> <!-- /.card -->
+      </div> <!-- each question -->
     </div>
   </section>
 </div>
