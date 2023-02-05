@@ -1,0 +1,6 @@
+<div class="col-xs-12 col-sm-6">
+    <label for="text" class="form-label">Question</label>
+    <textarea class="form-control" th:field="*{text}" rows="5" autofocus></textarea>
+    <span th:if="${#fields.hasErrors('text')}" th:errors="*{text}" class="text-danger"></span>
+    <br/>
+</div>
