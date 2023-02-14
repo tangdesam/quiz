@@ -1,0 +1,12 @@
+<div class="col-xs-12 col-sm-6">
+    <label for="text" class="form-label">Option</label>
+    <input type="text" class="form-control" th:field="*{text}" autofocus>
+    <span th:if="${#fields.hasErrors('text')}" th:errors="*{text}" class="text-danger"></span>
+    <br/>
+</div>
+<div class="col-xs-12 col-sm-6">
+    <label for="answer" class="form-label">Correct Answer</label>
+    <input type="checkbox" class="form-control" th:field="*{answer}" >
+    <span th:if="${#fields.hasErrors('answer')}" th:errors="*{answer}" class="text-danger"></span>
+    <br/>
+</div>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html
+        layout:decorate="~{shared/layout}"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create Option</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <section class="content-header">
+        <div class="container-fluid">
+            <h1>Create Option</h1>
+        </div>
+    </section>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card">
+                <form th:action="@{/option/save}" th:object="${option}" method="post">
+                    <div class="card-header">
+                        <h3 class="card-title">Option</h3>
+                        <input type="hidden" name="questionId" th:value="${param.questionId}"/>
+                    </div>
+                    <div class="card-body">
+                        <div th:if="${#fields.hasAnyErrors()}" class="row alert alert-danger">
+                            <ul>
+                                <li th:each="err : ${#fields.allErrors()}" th:text="${err}" />
+                            </ul>
+                        </div>
+
+                        <div th:insert="option/_form"></div>
+                    </div>
+                    <div class="card-footer">
+                        <input type="submit" class="btn btn-primary" value="Create">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>
