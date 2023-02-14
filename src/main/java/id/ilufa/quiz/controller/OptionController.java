@@ -5,6 +5,8 @@ import id.ilufa.quiz.dao.QuestionDao;
 import id.ilufa.quiz.entity.Exam;
 import id.ilufa.quiz.entity.Option;
 import id.ilufa.quiz.entity.Question;
+import id.ilufa.quiz.exception.QuizException;
+import id.ilufa.quiz.service.OptionService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.sql.SQLException;
 import java.util.Optional;
 
 @Controller
@@ -25,7 +28,7 @@ public class OptionController {
     @Autowired
     private QuestionDao questionDao;
     @Autowired
-    private OptionDao optionDao;
+    private OptionService optionService;
 
     @GetMapping("/create")
     public String create(Option option, @RequestParam("questionId") Long questionId) {
@@ -41,11 +44,11 @@ public class OptionController {
             questionId = Long.parseLong(questionIdStr);
             question = questionDao.findById(questionId).orElse(null);
             if (question == null) {
-                result.addError(new ObjectError("examId", "Question not found, invalid questionId"));
+                result.addError(new ObjectError("questionId", "Question not found, invalid questionId"));
             }
         }
         else {
-            result.addError(new ObjectError("examId", "Required parameter questionId"));
+            result.addError(new ObjectError("questionId", "Required parameter questionId"));
         }
 
         if (result.hasErrors()) {
@@ -53,8 +56,17 @@ public class OptionController {
         }
 
         option.setQuestion(question);
-        optionDao.save(option);
-        return "redirect:/exam/edit/" + question.getExam().getId();
+        try {
+            optionService.save(option);
+            return "redirect:/exam/edit/" + question.getExam().getId();
+        } catch (SQLException e) {
+            result.addError(new ObjectError("SQLException", e.getMessage()));
+            return "option/create";
+        } catch (QuizException e) {
+            result.addError(new ObjectError("QuizException", e.getMessage()));
+            return "option/create";
+        }
+
     }
 
 }
