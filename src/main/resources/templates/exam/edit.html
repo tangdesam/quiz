@@ -52,10 +52,13 @@
           </div>
           <div class="card-body">
             <span th:each="option : ${question.optionList}">
-              <input type="radio" th:name="${'answer-' + iStatus.index}" th:text="${option.text}"
-                     th:values="${option.id}" disabled th:checked="${option.answer}"/>
               <a th:href="@{/option/edit?id={id}(id=${option.id})}">
                 <i class="fas fa-edit"></i>
+              </a>
+              <input type="radio" th:name="${'answer-' + iStatus.index}" th:text="${option.text}"
+                     th:values="${option.id}" disabled th:checked="${option.answer}"/>
+              <a th:href="@{/option/delete/{id}(id=${option.id})}" onclick="return confirm('Are you sure?');">
+                <i class="fas fa-trash"></i>
               </a>
               <br>
             </span>

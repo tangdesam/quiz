@@ -10,14 +10,12 @@ import id.ilufa.quiz.service.OptionService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 import java.util.Optional;
@@ -29,6 +27,8 @@ public class OptionController {
     private QuestionDao questionDao;
     @Autowired
     private OptionService optionService;
+    @Autowired
+    private OptionDao optionDao;
 
     @GetMapping("/create")
     public String create(Option option, @RequestParam("questionId") Long questionId) {
@@ -67,6 +67,45 @@ public class OptionController {
             return "option/create";
         }
 
+    }
+
+    @GetMapping("/edit")
+    public String edit(@RequestParam("id") String id, Model model) {
+        Option option = optionDao.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid ID:" + id));
+
+        model.addAttribute("option", option);
+        return "option/edit";
+    }
+
+    @PostMapping("/update/{id}")
+    public String update(@Valid Option option, BindingResult result) {
+
+        Option optionRow = optionDao.findById(option.getId()).orElse(null);
+        if (optionRow == null) {
+            result.addError(new ObjectError("optionId", "Option not found, invalid optionId"));
+        }
+
+        if (result.hasErrors()) {
+            return "option/edit";
+        }
+
+        optionRow.setText(option.getText());
+        optionRow.setAnswer(option.isAnswer());
+        optionDao.save(optionRow);
+
+        return "redirect:/exam/edit/" + optionRow.getQuestion().getExam().getId();
+    }
+
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable("id") String id, Model model) {
+        Option option = optionDao.findById(id).orElse(null);
+        if (option == null) {
+            return "redirect:/exam/";
+        }
+        String examId = option.getQuestion().getExam().getId();
+        optionDao.delete(option);
+        return "redirect:/exam/edit/" + examId;
     }
 
 }
